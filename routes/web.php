@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Note;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +24,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
-        'notes' => Note::where('user_id',Auth::id())
+        'notes' => Note::where('user_id',Auth::id())->orderBy('priority','desc')->get()
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -34,4 +36,12 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::post('/add-new-note', [Note::class, 'create'])->name('note.create');
+Route::post('/add-new-note', [NoteController::class, 'create'])->name('note.create');
+
+// Route::post('/add-new-note', function (Request $request) {
+//     $newNote = new NoteController();
+//     $newNote->create($request);
+//     return view('dashboard', [
+//         'notes' => Note::where('user_id',Auth::id())
+//     ]);
+// })->middleware(['auth', 'verified'])->name('note.create');;

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); 
             $table->foreign('user_id')->references('id')->on('users');
             $table->longText('description');
-            $table->enum('priority', ['l', 'm', 'h']);
+            $table->enum('priority', ['0', '1', '2']);
             $table->enum('status', ['a', 'c']);
             $table->timestamps();
         });

@@ -19,11 +19,27 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <ul class="notes">
-                        <li class="note">Nota 1</li>
-                        <li class="note">Nota 2</li>
-                        <li class="note">Nota 3</li>                        
-                    </ul>
+                    <h2>My notes:</h2>
+                    <table class="notes">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Priority</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($notes as $note)
+                            <tr>
+                                <td>{{ $note->getDescription() }}</td>
+                                <td>{{ $note->getStatus() }}</td>
+                                <td>{{ $note->getPriority() }}</td>
+                                <td><button>Edit</button></td>
+                                <td><button>Complete</button></td>
+                            </tr>              
+                            @endforeach  
+                        </tbody>                                
+                    </table>
                 </div>
             </div>
         </div>

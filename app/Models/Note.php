@@ -15,4 +15,40 @@ class Note extends Model
         'priority',
         'status'
     ];
+
+    protected $allowedStatus = [
+        'a'=>'active',
+        'c'=>'completed'
+    ];
+
+    protected $allowedPriorities = [
+        '0'=>'low',
+        '1'=>'medium',
+        '2'=>'high'
+    ];
+
+    public function getDescription() : string
+    {
+        return $this->description;
+    }
+
+    public function getStatus() : string
+    {
+        return $this->allowedStatus[$this->status];
+    }
+
+    public function getPriority() : string
+    {
+        return $this->allowedPriorities[$this->priority];
+    }
+
+    public function setPriority(string $value) : string
+    {        
+        $key = array_search($value, $this->allowedPriorities);
+        if ($key !== false) {            
+            return $key;
+        }
+        return '1';
+
+    }
 }
