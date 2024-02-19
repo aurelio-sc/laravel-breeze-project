@@ -62,8 +62,9 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form class="stdForm" action="{{ route('note.create') }}" method="POST">
+                <div class="p-6 text-gray-900 dark:text-gray-100" x-data="{open:false}">
+                    <button x-on:click="open = !open">Add a note</button>
+                    <form x-show="open" class="stdForm" action="{{ route('note.create') }}" method="POST">
                         @csrf
                         <textarea id="description" name="description" placeholder="Write a new note..."></textarea>
                         <div class="input-field">
