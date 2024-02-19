@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 
 class Note extends Model
 {
@@ -28,15 +29,17 @@ class Note extends Model
         '2'=>'high'
     ];
 
-    public function getId() : string
-    {
-        return $this->id;
-    }
-
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
+    //Getters:
+
+    public function getId() : string
+    {
+        return $this->id;
+    }   
 
     public function getDescription() : string
     {
@@ -52,6 +55,19 @@ class Note extends Model
     {
         return $this->allowedPriorities[$this->priority];
     }
+
+    public static function getActive()
+    {
+        return Note::where('status','a');
+    }
+
+    public static function getCompleted()
+    {
+        return Note::where('status','c');
+    }
+
+
+    //Setters:
 
     public function setPriority(string $value) : string
     {        

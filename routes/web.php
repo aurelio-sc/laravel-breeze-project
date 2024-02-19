@@ -24,7 +24,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
-        'notes' => Note::where('user_id',Auth::id())->orderBy('priority','desc')->get()
+        'active_notes' => Note::getActive()->where('user_id',Auth::id())->orderBy('priority','desc')->get(),
+        'completed_notes' => Note::getCompleted()->where('user_id',Auth::id())->orderBy('priority','desc')->get(),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -38,6 +39,8 @@ require __DIR__.'/auth.php';
 
 Route::post('/add-new-note', [NoteController::class, 'create'])->name('note.create');
 Route::post('/edit-note/{id}', [NoteController::class, 'edit'])->name('note.edit');
+Route::post('/complete-note/{id}', [NoteController::class, 'complete'])->name('note.complete');
+Route::post('/activate-note/{id}', [NoteController::class, 'activate'])->name('note.activate');
 
 // Route::post('/add-new-note', function (Request $request) {
 //     $newNote = new NoteController();

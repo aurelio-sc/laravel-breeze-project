@@ -14,12 +14,13 @@
             </div>
         </div>
     </div>
-
+    @if (count($active_notes) || count($completed_notes))
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                @if (count($active_notes))
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h2>My notes:</h2>
+                    <h2>My active notes:</h2>
                     <table class="notes">
                         <thead>
                             <tr>
@@ -29,7 +30,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($notes as $note)
+                            @foreach ($active_notes as $note)
                             <tr>
                                 <td>{{ $note->getDescription() }}</td>
                                 <td>{{ $note->getStatus() }}</td>
@@ -50,15 +51,53 @@
                                         <button type="submit">Save changes</button>
                                     </form>
                                 </td>
-                                <td><button>Complete</button></td>
+                                <td>
+                                    <form action="{{ route('note.complete', ['id' => $note->getId()]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Complete</button>
+                                    </form>
+                                </td>
                             </tr>              
                             @endforeach  
                         </tbody>                                
                     </table>
                 </div>
+                @endif
+                @if (count($completed_notes))
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <h2>My completed notes:</h2>
+                    <table class="notes">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Priority</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($completed_notes as $note)
+                            <tr>
+                                <td>{{ $note->getDescription() }}</td>
+                                <td>{{ $note->getStatus() }}</td>
+                                <td>{{ $note->getPriority() }}</td>
+                                <td>
+                                    <form action="{{ route('note.activate', ['id' => $note->getId()]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Activate</button>
+                                    </form>
+                                </td>
+                                <td><button>Delete</button></td>
+                            </tr>              
+                            @endforeach  
+                        </tbody>                                
+                    </table>
+                </div>
+                @endif
             </div>
         </div>
     </div>
+    @endif
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

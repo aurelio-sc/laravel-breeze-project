@@ -35,14 +35,31 @@ class NoteController extends Controller
             $note->priority = $note->setPriority($request->priority);
             $note->save();            
         }
-        
+
         return redirect()->route('dashboard');
        
     }
 
-    public function setStatus(Request $request)
+    public function complete($id)
     {
-        
+        $note = Note::findOrFail($id);
+        if ($note->user_id == auth()->id()) {            
+            $note->status = 'c';
+            $note->save();
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    public function activate($id)
+    {
+        $note = Note::findOrFail($id);
+        if ($note->user_id == auth()->id()) {            
+            $note->status = 'a';
+            $note->save();
+        }
+
+        return redirect()->route('dashboard');
     }
 
     public function setPriority(Request $request)
