@@ -86,7 +86,12 @@
                                         <button type="submit">Activate</button>
                                     </form>
                                 </td>
-                                <td><button>Delete</button></td>
+                                <td>
+                                    <form action="{{ route('note.delete', ['id' => $note->getId()]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>              
                             @endforeach  
                         </tbody>                                

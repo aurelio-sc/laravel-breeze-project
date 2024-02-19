@@ -62,13 +62,12 @@ class NoteController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function setPriority(Request $request)
+    public function delete($id)
     {
-        
-    }
-
-    public function destroy(Request $request)
-    {
-        
+        $note = Note::findOrFail($id);
+        if ($note->user_id == auth()->id()) {            
+            $note->delete();
+        }
+        return redirect()->route('dashboard');
     }
 }
