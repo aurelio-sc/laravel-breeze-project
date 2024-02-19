@@ -1,4 +1,4 @@
-<x-app-layout>    
+<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
@@ -34,7 +34,22 @@
                                 <td>{{ $note->getDescription() }}</td>
                                 <td>{{ $note->getStatus() }}</td>
                                 <td>{{ $note->getPriority() }}</td>
-                                <td><button>Edit</button></td>
+                                <td x-data="{open:false}"><button x-on:click="open = !open">Edit</button>
+                                    <form x-show="open" class="stdForm" action="{{ route('note.edit', ['id' => $note->getId()]) }}" method="POST">
+                                        @csrf
+                                        <textarea id="description" name="description">{{ $note->getDescription() }}</textarea>
+                                        <div class="input-field">
+                                            <span>Priority:</span>
+                                            <input type="radio" name="priority" id="low-priority" value="low" placeholder="Low" {{ $note->getPriority() == 'low' ? 'checked' : '' }}>
+                                            <label for="low-priority">Low</label>
+                                            <input type="radio" name="priority" id="medium-priority" value="medium" {{ $note->getPriority() == 'medium' ? 'checked' : '' }}>
+                                            <label for="medium-priority">Medium</label>
+                                            <input type="radio" name="priority" id="high-priority" value="high" {{ $note->getPriority() == 'high' ? 'checked' : '' }}>
+                                            <label for="high-priority">High</label>
+                                        </div>
+                                        <button type="submit">Save changes</button>
+                                    </form>
+                                </td>
                                 <td><button>Complete</button></td>
                             </tr>              
                             @endforeach  

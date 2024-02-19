@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::post('/add-new-note', [NoteController::class, 'create'])->name('note.create');
+Route::post('/edit-note/{id}', [NoteController::class, 'edit'])->name('note.edit');
 
 // Route::post('/add-new-note', function (Request $request) {
 //     $newNote = new NoteController();

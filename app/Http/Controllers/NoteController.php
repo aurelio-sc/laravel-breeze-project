@@ -23,9 +23,17 @@ class NoteController extends Controller
         return redirect()->back();
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request, $id)
     {
-        
+        $request->validate([
+            'description' => 'required|string',
+            'priority' => 'required|in:low,medium,high',
+        ]);
+        $note = Note::findOrFail($id);
+        $note->description = $request->description;
+        $note->priority = $note->setPriority($request->priority);
+        $note->save();
+        return redirect()->back();
     }
 
     public function setStatus(Request $request)

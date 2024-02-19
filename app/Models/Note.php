@@ -27,6 +27,11 @@ class Note extends Model
         '2'=>'high'
     ];
 
+    public function getId() : string
+    {
+        return $this->id;
+    }
+
     public function getDescription() : string
     {
         return $this->description;
