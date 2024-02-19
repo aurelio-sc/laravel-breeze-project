@@ -20,7 +20,7 @@ class NoteController extends Controller
         $note->status = 'a';
         $note->user_id = auth()->id();
         $note->save();
-        return redirect()->back();
+        return redirect()->route('dashboard');
     }
 
     public function edit(Request $request, $id)
@@ -30,10 +30,14 @@ class NoteController extends Controller
             'priority' => 'required|in:low,medium,high',
         ]);
         $note = Note::findOrFail($id);
-        $note->description = $request->description;
-        $note->priority = $note->setPriority($request->priority);
-        $note->save();
-        return redirect()->back();
+        if ($note->user_id == auth()->id()) {
+            $note->description = $request->description;
+            $note->priority = $note->setPriority($request->priority);
+            $note->save();            
+        }
+        
+        return redirect()->route('dashboard');
+       
     }
 
     public function setStatus(Request $request)
