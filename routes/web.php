@@ -3,6 +3,7 @@
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Note;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::get('/dashboard', function () {
     return view('dashboard', [
         'active_notes' => Note::getActive()->where('user_id',Auth::id())->orderBy('priority','desc')->get(),
         'completed_notes' => Note::getCompleted()->where('user_id',Auth::id())->orderBy('priority','desc')->get(),
+        'user' => User::where('id',Auth::id())->get('name'),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

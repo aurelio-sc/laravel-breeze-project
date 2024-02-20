@@ -29,6 +29,12 @@ class Note extends Model
         '2'=>'high'
     ];
 
+    protected $prioritiesColors = [
+        '0' => '#99f6e4', //'teal-200',
+        '1' => '#fef3c7', //'amber-100',
+        '2' => '#fca5a5', //'red-300'
+    ];
+
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -64,6 +70,11 @@ class Note extends Model
     public static function getCompleted()
     {
         return Note::where('status','c');
+    }
+
+    public function getPriorityColor() : string 
+    {
+        return $this->prioritiesColors[$this->priority];
     }
 
 
