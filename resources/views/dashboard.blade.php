@@ -4,14 +4,13 @@
             {{ __('Dashboard') }} - {{ $user[0]->name }}
         </h2>
     </x-slot>
-
-    @if (count($active_notes) || count($completed_notes))
+    
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 @if (count($active_notes))
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight mb-4">My active notes:</h2>
+                <section class="p-6 text-gray-900 dark:text-gray-100 flex flex-col gap-4">
+                    <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight">My active notes:</h2>
                     <table class="notes w-full flex flex-col gap-2">
                         <thead>
                             <tr class="grid grid-cols-6 w-full text-left">
@@ -59,10 +58,36 @@
                             @endforeach  
                         </tbody>                                
                     </table>
-                </div>
+                    {{ $active_notes->links() }}
+                </section>
                 @endif
+
+                <section class="p-6 text-gray-900 dark:text-gray-100" x-data="{open:false}">
+                    <button class="text-gray-800 dark:text-gray-100 border-b border-transparent hover:border-gray-800 dark:hover:border-gray-100" x-on:click="open = !open">Add a note</button>
+                    <form x-show="open" class="stdForm w-1/3 flex flex-col gap-2" action="{{ route('note.create') }}" method="POST">
+                        @csrf
+                        <textarea class="resize-none bg-transparent px-3 rounded mt-2 placeholder-gray-300" id="description" name="description" placeholder="Note's description"></textarea>
+                        <div class="input-field flex flex-row gap-4">
+                            <span class="grow text-left">Priority:</span>
+                            <div class="radio-input flex items-center gap-1">
+                                <input class="checked:text-sky-600 bg-gray-300 checked:bg-none cursor-pointer" type="radio" name="priority" id="low-priority" value="low" placeholder="Low">
+                                <label for="low-priority">Low</label>
+                            </div>
+                            <div class="radio-input flex items-center gap-1">
+                                <input class="checked:text-sky-600 bg-gray-300 checked:bg-none cursor-pointer" type="radio" name="priority" id="medium-priority" value="medium" checked>
+                                <label for="medium-priority">Medium</label>
+                            </div>
+                            <div class="radio-input flex items-center gap-1">
+                                <input class="checked:text-sky-600 bg-gray-300 checked:bg-none cursor-pointer" type="radio" name="priority" id="high-priority" value="high">
+                                <label for="high-priority">High</label>
+                            </div>
+                        </div>
+                        <button class="w-fit text-left border border-solid rounded px-2 py-1 text-gray-800 dark:text-gray-100" type="submit">Add note</button>
+                    </form>
+                </section>
+
                 @if (count($completed_notes))
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+                <section class="p-6 text-gray-900 dark:text-gray-100">
                     <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight mb-4">My completed notes:</h2>
                     <table class="notes w-full flex flex-col gap-2">
                         <thead>
@@ -92,35 +117,12 @@
                             @endforeach  
                         </tbody>                                
                     </table>
-                </div>
-                @endif
-                <div class="p-6 text-gray-900 dark:text-gray-100" x-data="{open:false}">
-                    <button class="text-gray-800 dark:text-gray-100 border-b border-transparent hover:border-gray-800 dark:hover:border-gray-100" x-on:click="open = !open">Add a note</button>
-                    <form x-show="open" class="stdForm w-1/3 flex flex-col gap-2" action="{{ route('note.create') }}" method="POST">
-                        @csrf
-                        <textarea class="resize-none bg-transparent px-3 rounded mt-2 placeholder-gray-300" id="description" name="description" placeholder="Write a new note..."></textarea>
-                        <div class="input-field flex flex-row gap-4">
-                            <span class="grow text-left">Priority:</span>
-                            <div class="radio-input flex items-center gap-1">
-                                <input class="checked:text-sky-600 bg-gray-300 checked:bg-none cursor-pointer" type="radio" name="priority" id="low-priority" value="low" placeholder="Low">
-                                <label for="low-priority">Low</label>
-                            </div>
-                            <div class="radio-input flex items-center gap-1">
-                                <input class="checked:text-sky-600 bg-gray-300 checked:bg-none cursor-pointer" type="radio" name="priority" id="medium-priority" value="medium" checked>
-                                <label for="medium-priority">Medium</label>
-                            </div>
-                            <div class="radio-input flex items-center gap-1">
-                                <input class="checked:text-sky-600 bg-gray-300 checked:bg-none cursor-pointer" type="radio" name="priority" id="high-priority" value="high">
-                                <label for="high-priority">High</label>
-                            </div>
-                        </div>
-                        <button class="w-fit text-left border border-solid rounded px-2 py-1 text-gray-800 dark:text-gray-100" type="submit">Add new</button>
-                    </form>
-                </div>
+                </section>
+                @endif                
             </div>
         </div>
     </div>
-    @endif
+    
 </x-app-layout>
 
 @push('scripts')

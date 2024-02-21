@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
-        'active_notes' => Note::getActive()->where('user_id',Auth::id())->orderBy('priority','desc')->get(),
+        'active_notes' => Note::getActive()->where('user_id',Auth::id())->orderBy('priority','desc')->paginate(10),
         'completed_notes' => Note::getCompleted()->where('user_id',Auth::id())->orderBy('priority','desc')->get(),
         'user' => User::where('id',Auth::id())->get('name'),
     ]);
